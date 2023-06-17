@@ -1,2 +1,2 @@
 # MazeGame
-Building an excel maze game on Github
+Building an excel maze game on Github!
