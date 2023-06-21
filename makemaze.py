@@ -15,7 +15,7 @@ def makemaze(x_maze,y_maze):
     #y_maze = 100
 
 
-    maze = array([[0]*x_maze]*y_maze)
+    maze = array([[0]*y_maze]*x_maze)
     print(maze[0, 0])
 
     seed = random.randbytes((x_maze)*(y_maze))
@@ -37,12 +37,12 @@ def makemaze(x_maze,y_maze):
     # Condition the maze so that nothing interferes with
     # transiting the borders of the maze
     for i in range(x_maze):
-        if maze[i,0] % 4 == 1 or maze[i,0] % 4 == 3:
-            maze[i,0] = maze[i,0] - 1
+        if maze[i,0] % 4 == 2 or maze[i,0] % 4 == 3:
+            maze[i,0] = maze[i,0] - 2
         maze[i,y_maze-1] = 0
     for j in range(y_maze):
-        if maze[0,j] % 4 == 2 or maze[0,j] % 4 == 3:
-            maze[0,j] = maze[0,j] - 2
+        if maze[0,j] % 2 == 1:
+            maze[0,j] = maze[0,j] - 1
         maze[x_maze-1,j] = 0
 
     # make a projection of the maze
@@ -52,4 +52,3 @@ def makemaze(x_maze,y_maze):
     #        maze_pj[i,j] = maze[i,j] % 4
 
     return maze
-
