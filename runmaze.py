@@ -7,34 +7,38 @@ x = 100
 y = 100
 
 t = time()
+
 # initialize the maze
 maze = makemaze(x,y)
 # set your starting spot to 0,0
-spaces_good = [[0,0]]
-spaces_check = [[0,0]]
-
-# append both spaces_check and spaces_good
-def appen(a,b,c,d):
-    c.append([a,b])
-    d.append([a,b])
+start = ('0','0')
+blank = [1,1,'']
+check = [start]
+maze[start][2] = 'empty'
 
 # check to see which spaces are achievable
-while spaces_check != []:
-    for s in spaces_check:
+while check != []:
+    for mc in check:
         #print(s)
         #print(maze[s[0],s[1]])
         # check up
-        [a,b] = [s[0],s[1]]
-        if b > 0:
-            if maze[a,b-1] % 2 != 1 and [a,b-1] not in spaces_good: appen(a,b-1,spaces_check,spaces_good)
-        if a > 0:
-            if maze[a-1,b] % 4 != 2 and maze[a-1,b] % 4 != 3 and [a-1,b] not in spaces_good: appen(a-1,b,spaces_check,spaces_good)
-        if b < y-1:
-            if maze[a,b] % 2 != 1 and [a,b+1] not in spaces_good: appen(a,b+1,spaces_check,spaces_good)
-        if a < x-1:
-            if maze[a,b] % 4 != 2 and maze[a,b] % 4 != 3 and [a+1,b] not in spaces_good: appen(a+1,b,spaces_check,spaces_good)
-        spaces_check.remove(s)
+        c = [int(mc[0]),int(mc[1])]
+        [mu,mr,md,ml] = [(str(c[0]),str(c[1]-1)),(str(c[0]+1),str(c[1])),(str(c[0]),str(c[1]+1)),(str(c[0]-1),str(c[1]))]
+
+        if maze.get(mu,'') != '' and maze.get(mu,blank)[1] == 0 and maze.get(mu,blank)[2] != 'empty':
+            maze[mu][2] = 'empty'
+            check.append(mu)
+        if maze.get(mr,'') != '' and maze.get(mc,blank)[0] == 0 and maze.get(mr,blank)[2] != 'empty':
+            maze[mr][2] = 'empty'
+            check.append(mr)
+        if maze.get(md,'') != '' and maze.get(mc,blank)[1] == 0 and maze.get(md,blank)[2] != 'empty':
+            maze[md][2] = 'empty'
+            check.append(md)
+        if maze.get(ml,'') != '' and maze.get(ml,blank)[0] == 0 and maze.get(ml,blank)[2] != 'empty':
+            maze[ml][2] = 'empty'
+            check.append(ml)
+        check.remove(mc)
 
 #print(spaces_good)
 print(time() - t)
-printmaze(maze,spaces_good)
+#printmaze(maze)
