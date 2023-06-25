@@ -41,4 +41,4 @@ while check != []:
 
 #print(spaces_good)
 print(time() - t)
-#printmaze(maze)
+printmaze(maze,x,y)
