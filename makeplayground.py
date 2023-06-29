@@ -3,6 +3,7 @@ from tkinter import ttk
 from runmaze import runmaze
 from time import time
 from math import floor
+import keyboard
 
 x=100
 y=100
@@ -23,10 +24,18 @@ l = [0,0]
 m_h = [[None for i in range(y_s+1)] for j in range(x_s)]
 m_v = [[None for i in range(y_s)] for j in range(x_s+1)]
 
+#Initialize refresh timer for keystrokes
+t_a=0
+t_s=0
+t_d=0
+t_w=0
+t_q=0
+t_e=0
+
 def ptol(p):
     i = int(p[0])
     j = int(p[1])
-    # Set the correct bounds for the ptol!!!!!!!!!!!!
+    # Still need to test the boundary cases!!!!!!!!!!
     if i > floor(x_s/2) and i < (x-floor(x_s/2)):
         i = floor(x_s/2)
     elif i >= (x-floor(x_s/2)):
