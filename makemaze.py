@@ -15,14 +15,14 @@ def makemaze(x,y):
     maze = dict()
     seed = random.randbytes(x*y)
 
-    for i in range(x):
-        for j in range(y):
+    for i in range(x-1):
+        for j in range(y-1):
             k = i*y + j
-            if (seed[k] % 4 == 2 or seed[k] % 4 == 3) and (j != 0 and j != y-1):
+            if (seed[k] % 4 == 2 or seed[k] % 4 == 3) and j > 0:
                 maze[str(i),str(j)] = maze.get((str(i),str(j)),[1,0,''])
             else:
                 maze[str(i),str(j)] = maze.get((str(i),str(j)),[0,0,''])
-            if seed[k] % 2 == 1 and (i != 0, i != x) and (i != 0 and i != x-1):
+            if seed[k] % 2 == 1 and i > 0 :
                 maze[str(i),str(j)][1] = 1
     
 
