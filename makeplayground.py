@@ -2,24 +2,40 @@ from tkinter import *
 from tkinter import ttk
 from runmaze import runmaze
 from time import time
+from math import floor
 
 x=100
 y=100
 x_s = 11
 y_s = 11
 
+# Build out the x by y maze and define a blank space for any
+# functions which need to use a space outside the bounds of the maze
 maze = runmaze(x,y)
 blank = [0,0,'']
 
 # p = position within the maze, l = location on the local map, tl = top left
 p = ('0','0')
-l = [5,5]
 tl = ('0','0')
+l = [0,0]
 
 # m will be the map horizontal and vertical segments
 m_h = [[None for i in range(y_s+1)] for j in range(x_s)]
 m_v = [[None for i in range(y_s)] for j in range(x_s+1)]
 
+def ptol(p):
+    i = int(p[0])
+    j = int(p[1])
+    # Set the correct bounds for the ptol!!!!!!!!!!!!
+    if i > floor(x_s/2) and i < (x-floor(x_s/2)):
+        i = floor(x_s/2)
+    elif i >= (x-floor(x_s/2)):
+        i = i-x+floor(x_s/2)
+    if j > floor(y_s/2) and j < (y-floor(y_s/2)):
+        j = floor(y_s/2)
+    elif j >= (y-floor(y_s/2)):
+        j = j-y+floor(y_s/2)
+    
 def move(p):
     pass
 
