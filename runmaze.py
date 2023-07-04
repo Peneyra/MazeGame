@@ -1,11 +1,7 @@
 from makemaze import makemaze
-from time import time
-from printmaze import printmaze
+from math import floor
 
 def runmaze(x,y):
-    # give dimensions of the maze
-
-    t = time()
 
     # initialize the maze
     maze = makemaze(x,y)
@@ -13,31 +9,26 @@ def runmaze(x,y):
     start = (0,0)
     blank = [1,1,'']
     check = [start]
+    check_all = [start]
     maze[start][2] = 'empty'
 
     # check to see which spaces are achievable
     while check != []:
         for mc in check:
-            #print(s)
-            #print(maze[s[0],s[1]])
             # check up
-            c = [mc[0],mc[1]]
-            [mu,mr,md,ml] = [(c[0],c[1]-1),(c[0]+1,c[1]),(c[0],c[1]+1),(c[0]-1,c[1])]
+            maze_local = [[(mc[0],mc[1]-1),1],
+                          [(mc[0]+1,mc[1]),0],
+                          [(mc[0],mc[1]+1),1],
+                          [(mc[0]-1,mc[1]),0]]
 
-            if maze.get(mu,'') != '' and maze.get(mu,blank)[1] == 0 and maze.get(mu,blank)[2] != 'empty':
-                maze[mu][2] = 'empty'
-                check.append(mu)
-            if maze.get(mr,'') != '' and maze.get(mc,blank)[0] == 0 and maze.get(mr,blank)[2] != 'empty':
-                maze[mr][2] = 'empty'
-                check.append(mr)
-            if maze.get(md,'') != '' and maze.get(mc,blank)[1] == 0 and maze.get(md,blank)[2] != 'empty':
-                maze[md][2] = 'empty'
-                check.append(md)
-            if maze.get(ml,'') != '' and maze.get(ml,blank)[0] == 0 and maze.get(ml,blank)[2] != 'empty':
-                maze[ml][2] = 'empty'
-                check.append(ml)
+            for ml in maze_local:
+                if maze.get(ml[0],'') != '' and maze.get(ml[0],blank)[ml[1]] == 0 and maze.get(ml[0],blank)[2] != 'empty':
+                    maze[ml[0]][2] = 'empty'
+                    check.append(ml[0])
+                    check_all.append(ml[0])
             check.remove(mc)
-    return maze
-#print(spaces_good)
-#print(time() - t)
-#printmaze(maze,x,y)
+
+    check_all.sort()
+    goal = check_all[floor(len(check_all)/2)]
+    maze[goal][2] = 'goal'
+    return maze, goal
