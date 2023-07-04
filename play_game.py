@@ -7,8 +7,8 @@ import keyboard
 
 # x and y are dimensions of the overall maze, x_s and y_s are 
 # dimensions of the local map
-x=100
-y=100
+x=30
+y=30
 x_s = 11
 y_s = 11
 x_2 = floor(x_s/2)
@@ -50,6 +50,10 @@ def checkmove(a):
 def build(p):
     i_0 = min(max(p[0]-x_2,0),x-x_s)-1
     j_0 = min(max(p[1]-y_2,0),y-y_s)-1
+
+    try: p_g.destroy()
+    except: pass
+
     for i in range(x_s+1):
         for j in range(y_s+1):
             # If the top and left rows end off the maze definions
@@ -59,9 +63,9 @@ def build(p):
             else: 
                 s = blank
 
-            if 'goal' in s[2]: p_g.grid(column=s[0]*2+1,row=s[1]*2+1)
-            else: p_g.destroy()
-
+#            if (i_0+i,j_0+j) == goal:
+#                p_g = Frame(mf,height=20,width=20,background='blue')
+#                p_g.grid(column=(i_0+i)*2+1,row=(j_0+j)*2+1)
 
             if s[0]==0: w_v[i][j-1]['relief']='flat'
             elif s[0]==1: w_v[i][j-1]['relief']='sunken'
@@ -74,12 +78,11 @@ def build(p):
            min(p[1],max(p[1]+y_s-y,y_2))]
     # if the position on the map has moved, update the x
     p_x.grid(column=p_t[0]*2+1,row=p_t[1]*2+1)
-    return p_t
 
 def frame_update(p):
     try:
         #t = time()
-        p_s = build(p)
+        build(p)
         root.update()
         #print(time()-t)
     except Exception as exc:
@@ -101,7 +104,6 @@ mf.grid(row=0,column=0)
 # be replaced with p_b
 p_x = Frame(mf,height=20,width=20,background='green')
 p_x.grid(column=p_s[0]*2+1,row=p_s[1]*2+1)
-p_g = Frame(mf,height=20,width=20,background='blue')
 
 # map each wall to vertical m_v and horizontal m_h walls
 for i in range(x_s+1):
