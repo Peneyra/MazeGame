@@ -10,7 +10,7 @@ def runmaze(x,y):
     # initialize the maze
     maze = makemaze(x,y)
     # set your starting spot to 0,0
-    start = ('0','0')
+    start = (0,0)
     blank = [1,1,'']
     check = [start]
     maze[start][2] = 'empty'
@@ -21,8 +21,8 @@ def runmaze(x,y):
             #print(s)
             #print(maze[s[0],s[1]])
             # check up
-            c = [int(mc[0]),int(mc[1])]
-            [mu,mr,md,ml] = [(str(c[0]),str(c[1]-1)),(str(c[0]+1),str(c[1])),(str(c[0]),str(c[1]+1)),(str(c[0]-1),str(c[1]))]
+            c = [mc[0],mc[1]]
+            [mu,mr,md,ml] = [(c[0],c[1]-1),(c[0]+1,c[1]),(c[0],c[1]+1),(c[0]-1,c[1])]
 
             if maze.get(mu,'') != '' and maze.get(mu,blank)[1] == 0 and maze.get(mu,blank)[2] != 'empty':
                 maze[mu][2] = 'empty'
