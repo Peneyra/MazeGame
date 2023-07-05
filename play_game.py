@@ -4,11 +4,12 @@ from runmaze import runmaze
 from time import *
 from math import *
 import keyboard
+import sqlite3
 
 # x and y are dimensions of the overall maze, x_s and y_s are 
 # dimensions of the local map
-x=100
-y=100
+x=50
+y=50
 x_s = 11
 y_s = 11
 x_2 = floor(x_s/2)
@@ -31,12 +32,20 @@ kp = 'zzz'
 w_h = [[None for i in range(y_s+1)] for j in range(x_s)]
 w_v = [[None for i in range(y_s)] for j in range(x_s+1)]
 
-#Initialize refresh timer for keystrokes
-refresh = [0.03, 0.1]
+#Initialize all timers for keystrokes
+refresh = [0.03, 0.15]
 t = dict()
 for a in 'qweasd': t[a] = t.get(a,0)
 t['up'] = t.get('up',0)
+t_start = time()
 
+# Initialize the move database
+con = sqlite3.connect("MazeGame.db")
+cur = con.cursor()
+cur.execute("CREATE TABLE '"+str(floor(t_start))+"'(time,direction,position,proximity)")
+
+# -----------------------------------------------------------------------
+# Define all the funcitons we will use
 def checkmove(a):
     if a == 'zzz': return False
     elif a == 'a': dp, i = (p[0]-1,p[1]), 0
@@ -92,6 +101,7 @@ def frame_update(p):
     except Exception as exc:
         print('found an error')
         print(exc)
+        con.close()
         exit()
 
 # -----------------------------------------------------------------------
