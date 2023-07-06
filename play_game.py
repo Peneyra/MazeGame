@@ -8,8 +8,8 @@ import sqlite3
 
 # x and y are dimensions of the overall maze, x_s and y_s are 
 # dimensions of the local map
-x=50
-y=50
+x=20
+y=20
 x_s = 11
 y_s = 11
 x_2 = floor(x_s/2)
@@ -18,6 +18,7 @@ y_2 = floor(y_s/2)
 # Build out the x by y maze and define a blank space for any
 # functions which need to use a space outside the bounds of the maze
 maze, goal = runmaze(x,y)
+print(str("goal is a "+str(type(goal))))
 while abs(goal[0]-floor(x/2))>10 or abs(goal[1]-floor(y/2))>10: maze, goal = runmaze(x,y)
 blank = [0,0,'empty']
 
@@ -33,7 +34,7 @@ w_h = [[None for i in range(y_s+1)] for j in range(x_s)]
 w_v = [[None for i in range(y_s)] for j in range(x_s+1)]
 
 #Initialize all timers for keystrokes
-refresh = [0.03, 0.15]
+refresh = [0.03, 0.1]
 t = dict()
 for a in 'qweasd': t[a] = t.get(a,0)
 t['up'] = t.get('up',0)
@@ -42,7 +43,8 @@ t_start = time()
 # Initialize the move database
 con = sqlite3.connect("MazeGame.db")
 cur = con.cursor()
-cur.execute("CREATE TABLE '"+str(floor(t_start))+"'(time,direction,position,proximity)")
+if len(cur.execute("SELECT name FROM sqlite_master WHERE name = 'MazeGameMetrics'").fetchall())==0:
+    cur.execute("CREATE TABLE MazeGameMetrics(time,direction,p_x,p_y,proximity)")
 
 # -----------------------------------------------------------------------
 # Define all the funcitons we will use
@@ -104,6 +106,13 @@ def frame_update(p):
         con.close()
         exit()
 
+def victory():
+    res = cur.execute(str("SELECT time,direction,p_x,p_y,proximity FROM MazeGameMetrics WHERE time > "+str(t_start))).fetchall()
+    for r in res:
+        print(r)
+    con.close()
+    exit()
+
 # -----------------------------------------------------------------------
 # begin building the GUI
 root = Tk()
@@ -142,7 +151,12 @@ while True:
         if time()-t[kp]>refresh[1] and p[p_i]*dp<b:
             t[kp] = time()
             p[p_i] += dp
+            dxy = sqrt((p[0]-goal[0])**2+(p[1]-goal[1])**2)
+            cur.execute("""INSERT INTO MazeGameMetrics VALUES (?,?,?,?,?)""",(time(),kp,p[0],p[1],dxy))
+            con.commit()
             print(p)
+            if p == goal: victory()
+
 
     if time() - t['up'] > refresh[0]:
         frame_update(p)
