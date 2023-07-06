@@ -34,11 +34,9 @@ def runmaze(x,y):
         for i in range(2):
             for j in range(k1):
                 if maze[(c[0],c[1])][2]=='empty':
-                        print(maze[(c[0],c[1])])
                         maze[(c[0],c[1])][2] = 'goal'
                         print(maze[(c[0],c[1])])
                         print(c)
-                        print(str("c is a "+str(type(c))))
                         return maze, (c[0],c[1])
                 c[i] += k2
         k1+=1
